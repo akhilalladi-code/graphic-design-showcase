@@ -2,6 +2,9 @@
 
 A curated portfolio of graphic design, brand communication, event campaigns, social media creatives, corporate collateral, and broadcast graphics by Akhil Alladi.
 
+**Live site:** https://akhilalladi-code.github.io/graphic-design-showcase/  
+**Primary portfolio:** https://akhilalladi-code.github.io/akhil-alladi-portfolio/  
+
 **Primary discipline:** Graphic Design  
 **Focus areas:** Brand identity · Corporate communication · Campaign design · Social media · Print collateral · Motion and broadcast graphics
 
