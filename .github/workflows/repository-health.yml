@@ -1,0 +1,89 @@
+name: Scheduled repository health
+
+on:
+  schedule:
+    - cron: "17 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: repository-health
+  cancel-in-progress: true
+
+jobs:
+  health:
+    name: Documentation and repository checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Inspect repository health
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os
+          import re
+          from pathlib import Path
+          from urllib.parse import unquote, urlsplit
+          root = Path(".").resolve()
+          readme = root / "README.md"
+          if not readme.is_file() or readme.stat().st_size == 0:
+              raise SystemExit("README.md is missing or empty.")
+          tracked = os.popen("git ls-files").read().splitlines()
+          text_suffixes = {".md", ".html", ".css", ".js", ".jsx", ".ts", ".tsx", ".json", ".yml", ".yaml", ".txt"}
+          empty_files, conflicts = [], []
+          for name in tracked:
+              path = root / name
+              if not path.is_file():
+                  continue
+              if path.stat().st_size == 0:
+                  empty_files.append(name)
+              if path.suffix.lower() in text_suffixes and path.stat().st_size < 2000000:
+                  try:
+                      content = path.read_text(encoding="utf-8")
+                  except (UnicodeDecodeError, OSError):
+                      continue
+                  if re.search(r"^(<<<<<<< |=======\s*$|>>>>>>> )", content, re.MULTILINE):
+                      conflicts.append(name)
+          markdown_files = [root / p for p in tracked if p.lower().endswith(".md") and (root / p).is_file()]
+          broken_links = []
+          pattern = re.compile(r"!?(?:\[[^\]]*\])\(([^)]+)\)")
+          for md in markdown_files:
+              try:
+                  content = md.read_text(encoding="utf-8")
+              except (UnicodeDecodeError, OSError):
+                  continue
+              for raw in pattern.findall(content):
+                  target = raw.strip().split()[0].strip("<>")
+                  parsed = urlsplit(target)
+                  if parsed.scheme or parsed.netloc or not parsed.path:
+                      continue
+                  candidate = (md.parent / unquote(parsed.path)).resolve()
+                  if not candidate.exists():
+                      broken_links.append(f"{md.relative_to(root)} -> {target}")
+          summary = Path(os.environ["GITHUB_STEP_SUMMARY"])
+          lines = [
+              "## Scheduled repository health",
+              f"- Tracked files: {len(tracked)}",
+              f"- Markdown documents: {len(markdown_files)}",
+              f"- Empty tracked files: {len(empty_files)}",
+              f"- Possible merge-conflict files: {len(conflicts)}",
+              f"- Missing local Markdown link targets: {len(broken_links)}",
+          ]
+          if broken_links:
+              lines += ["", "### Local links to review"] + [f"- {item}" for item in broken_links[:50]]
+          if conflicts:
+              lines += ["", "### Possible merge-conflict markers"] + [f"- {item}" for item in conflicts]
+          if empty_files:
+              lines += ["", "### Empty tracked files"] + [f"- {item}" for item in empty_files[:50]]
+          summary.write_text("\n".join(lines) + "\n", encoding="utf-8")
+          if conflicts:
+              raise SystemExit("Possible merge-conflict markers detected; review the workflow summary.")
+          print("\n".join(lines))
+          PY
