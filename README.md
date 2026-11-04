@@ -16,6 +16,10 @@ A curated portfolio of graphic design, brand communication, event campaigns, soc
 - [Browse all projects](./projects/README.md)
 - [Project asset guide](./ASSET-GUIDE.md)
 
+## Tools
+
+- **[Framecheck — Social creative previewer](./tools/framecheck/)** — Preview artwork at common Instagram, LinkedIn, YouTube, TikTok, and X dimensions; adjust crop and positioning; inspect practical safe-area guides; and export a full-size PNG. Artwork is processed locally in the browser.
+
 ## Project categories
 
 - **Corporate & Energy:** Energy-sector campaigns, corporate communication, brochures and event collateral.
