@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f3f4ef">
+  <meta name="description" content="Preview social media artwork at real platform dimensions, check safe areas, adjust crops and export clean PNGs. Runs locally in your browser.">
+  <title>Framecheck — Social creative previewer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/styles.css"><script type="module" src="src/app.js"></script>
+</head>
+<body>
+<div class="shell">
+  <header class="topbar"><a class="brand" href="./"><span class="brand-icon">f.</span> framecheck</a><div class="top-status"><span class="privacy-dot"></span><span>LOCAL ONLY</span><span class="status-divider"></span><span id="status" role="status" aria-live="polite">Ready for artwork</span></div></header>
+  <main>
+    <section class="hero"><div><p class="eyebrow">THE LAST CHECK BEFORE YOU POST</p><h1>Make every frame<br><em>fit with intent.</em></h1><p class="intro">Preview your creative at real social dimensions. Check safe areas, fine-tune the crop, and export a clean image — without sending your artwork anywhere.</p></div><div class="hero-mark"><span>FC</span><small>01 / PREVIEW<br>02 / ADJUST<br>03 / EXPORT</small></div></section>
+    <section class="workspace"><div class="workspace-head"><div><span class="eyebrow">WORKSPACE / 01</span><h2>Preview your artwork</h2></div><div class="platform-picker"><label for="preset-select">Platform format</label><select id="preset-select"></select></div></div>
+      <div class="workspace-grid">
+        <section class="preview-panel" aria-label="Artwork preview"><div class="preview-meta"><div><span id="platform-label">Instagram / Feed portrait</span><strong id="dimension-label">1,080 × 1,350 px</strong></div><span id="ratio-label" class="ratio-badge">0.8:1 ratio</span></div>
+          <div id="drop-zone" class="drop-zone"><div id="canvas-frame" class="canvas-frame"><canvas id="artwork" width="1080" height="1350" aria-label="Artwork preview canvas"></canvas><div id="safe-overlay" class="safe-overlay"><span id="safe-label">KEEP KEY CONTENT INSIDE</span></div></div><div id="empty-state" class="empty-state"><div class="upload-glyph">↑</div><strong>Bring your artwork in</strong><span>Drop an image onto the canvas or browse files</span><label class="browse-button" for="image-input">Choose image<input id="image-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif"></label><small>PNG · JPG · WEBP · GIF · stays on this device</small></div></div>
+          <div id="image-details" class="image-details" hidden><div><strong id="image-name">artwork.png</strong><span id="image-size">1080 × 1350 px</span></div><button id="remove-image" class="text-button" type="button">Remove image</button></div>
+          <div class="safe-note"><span class="safe-symbol">◎</span><p id="preset-note">Approximate safe-area guidance.</p></div>
+        </section>
+        <aside class="settings-panel"><div class="settings-heading"><div><span class="eyebrow">ADJUST / 02</span><h3>Canvas settings</h3></div><span class="step-number">02</span></div>
+          <div id="controls" hidden>
+            <div class="setting-block"><label for="fit-select">Image fit</label><select id="fit-select"><option value="cover">Cover · fill frame</option><option value="contain">Contain · show all</option></select></div>
+            <div class="setting-block"><div class="label-row"><label for="zoom">Scale</label><output id="zoom-output">100%</output></div><input id="zoom" type="range" min="0.5" max="2.5" step="0.01" value="1" oninput="document.querySelector('#zoom-output').value = Math.round(this.value * 100) + '%'"></div>
+            <div class="setting-block"><div class="label-row"><label for="offset-x">Horizontal position</label><output id="x-output">0</output></div><input id="offset-x" type="range" min="-50" max="50" step="1" value="0" oninput="document.querySelector('#x-output').value = this.value"></div>
+            <div class="setting-block"><div class="label-row"><label for="offset-y">Vertical position</label><output id="y-output">0</output></div><input id="offset-y" type="range" min="-50" max="50" step="1" value="0" oninput="document.querySelector('#y-output').value = this.value"></div>
+            <div class="setting-block"><label for="background">Canvas background</label><div class="color-control"><input id="background" type="color" value="#20231f"><span>Visible when using Contain</span></div></div>
+            <div class="setting-divider"></div>
+            <label class="toggle-row" for="show-safe"><span><strong>Safe-area guide</strong><small>Preview only — never included in export</small></span><input id="show-safe" type="checkbox" checked><i></i></label>
+            <button id="reset" class="reset-button" type="button">↺ Reset adjustments</button>
+          </div>
+          <div id="controls-empty" class="controls-empty">Upload an image to unlock crop and positioning controls.</div>
+          <div class="export-block"><span class="eyebrow">OUTPUT / 03</span><button id="download" class="export-button" type="button" disabled><span>↓</span> Export PNG</button><small>Full-size PNG · guides excluded</small></div>
+        </aside>
+      </div>
+    </section>
+    <section class="formats-section"><div><span class="eyebrow">BUILT-IN FORMATS</span><h2>One creative. The right canvas.</h2><p>Starter dimensions for common placements across social platforms. Safe-area guides are practical design aids, not guarantees of how every app UI will render.</p></div><div class="format-chips"><span>Instagram · Feed / Story</span><span>LinkedIn · Post</span><span>YouTube · Thumbnail / Banner</span><span>TikTok · Cover</span><span>X · Post / Header</span></div></section>
+  </main>
+  <footer><span>FRAMECHECK · OPEN SOURCE TOOL</span><span>Made for thoughtful creative handoffs.</span><a href="https://github.com/akhilalladi-code/graphic-design-showcase">GITHUB ↗</a></footer>
+</div>
+</body>
+</html>
