@@ -1,0 +1,13 @@
+{
+  "name": "framecheck",
+  "version": "1.0.0",
+  "private": false,
+  "description": "A local-first social creative size, crop and safe-area preview tool.",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.mjs",
+    "test": "node --test",
+    "check": "node --check src/core.js && node --check src/app.js && node --check server.mjs"
+  },
+  "engines": { "node": ">=18" }
+}
