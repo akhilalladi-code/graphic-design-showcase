@@ -1,3 +1,7 @@
+![DESIGN SHOWCASE — Diwali 2026](./assets/diwali-banner.svg)
+
+<p align="center"><a href="https://akhilalladi-code.github.io/diwali-universe/"><strong>🪔 Explore Diwali Universe 2026 · Interactive celebration ↗</strong></a></p>
+
 # Akhil Alladi — Graphic Design Showcase
 
 A curated portfolio of graphic design, brand communication, event campaigns, social media creatives, corporate collateral, and broadcast graphics by Akhil Alladi.
